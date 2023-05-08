@@ -29,13 +29,13 @@ pipeline {
             }
         }
         
-        stage('Static Code Analysis') {
-            environment {
-                SONAR_URL = "http://13.38.76.193:9000/"
-            }
+        stage('Sonarqube Analysis') {
             steps {
-                withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_AUTH_TOKEN')]) {
-                sh 'cd spring-boot-app && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+                    withSonarQubeEnv('sonar-server') {
+                        sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Java-WebApp \
+                        -Dsonar.java.binaries=. \
+                        -Dsonar.projectKey=Java-WebApp '''
+    
                 }
             }
         }
