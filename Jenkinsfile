@@ -56,7 +56,7 @@ pipeline {
         stage('Docker Build & Push') {
             steps {
                    script {
-                       withDockerRegistry([ credentialsId: 'DockerHubCredentials', url: '' ]) {
+                       withDockerRegistry([ credentialsId: 'docker-cred', url: '' ]) {
                             sh "docker build -t webapp ."
                             sh "docker tag webapp ghazouanihm/webapp:latest"
                             sh "docker push ghazouanihm/webapp:latest "
